@@ -1,0 +1,46 @@
+<div class="tool-page-container">
+    <div class="tool-controls-wrapper">
+        <div class="tool-page">
+            <h1>{{ resultPdfUrl() ? '¡Marca de Agua Lista!' : 'Marca de Agua' }}</h1>
+
+            <div *ngIf="resultPdfUrl()" class="result-view-container">
+                <p class="subtitle">Revisa que el texto esté en la posición correcta.</p>
+                <div class="final-result-browser">
+                    <iframe [src]="resultPdfUrl()" frameborder="0"></iframe>
+                </div>
+                <div class="result-actions">
+                    <a [href]="resultPdfUrl()" download="marcado_docucraft.pdf" class="btn-action btn-download">📥 Descargar PDF</a>
+                    <button class="btn-secondary" (click)="editAgain()">⬅️ Cambiar texto</button>
+                    <button class="btn-text-only" (click)="fullReset()">Limpiar todo</button>
+                </div>
+            </div>
+
+            <div *ngIf="!resultPdfUrl()">
+                <p class="subtitle">Agrega una Marca de Agua al PDF.</p>
+                <button class="btn-toggle" *ngIf="!selectedFile() && !isUploaderVisible()" (click)="toggleUploader()">
+                    {{ selectedFile() ? '🔄 Cambiar PDF' : '➕ Seleccionar PDF' }}
+                </button>
+
+                <div class="uploader-wrapper" *ngIf="isUploaderVisible()">
+                    <app-file-uploader (onFilesReady)="handleFile($event)" (onClose)="toggleUploader()"></app-file-uploader>
+                </div>
+
+                <div *ngIf="selectedFile() && !isUploaderVisible()" class="config-area">
+                    <p><strong>Archivo:</strong> {{ selectedFile()?.name }}</p>
+                    <div class="input-group">
+                        <label>Texto de la marca:</label>
+                        <input type="text" [ngModel]="watermarkText()" (ngModelChange)="watermarkText.set($event)" class="custom-input">
+                    </div>
+                    <button class="btn-action" (click)="processWatermark()" [disabled]="isProcessing()">
+                        {{ isProcessing() ? 'Aplicando...' : 'Aplicar Marca de Agua' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="preview-sidebar" *ngIf="selectedFile() && !resultPdfUrl()">
+        <div class="preview-header">Previsualización</div>
+        <iframe [src]="getSafeUrl(selectedFile())"></iframe>
+    </div>
+</div>

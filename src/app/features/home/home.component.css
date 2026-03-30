@@ -1,0 +1,66 @@
+.welcome {
+  padding: 30px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+
+  padding: 30px;
+}
+
+.card {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 15px;
+  text-align: center;
+  /* Estado inicial: Sombra suave y centrada */
+  box-shadow: 0px 0px 20px 0px rgba(3, 149, 228, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  /* Borde azul claro con transparencia para que se vea suave */
+  border-color: rgba(88, 196, 255, 0.5);
+  /* Animación con valores de desenfoque (blur) más altos */
+  animation: shadow-rotate 2.5s infinite linear;
+}
+
+@keyframes shadow-rotate {
+  0% {
+    /* Aumentamos el blur a 40px y bajamos la opacidad a 0.4 para difuminar */
+    box-shadow: 15px 15px 40px rgba(3, 149, 228, 0.4);
+  }
+  25% {
+    box-shadow: -15px 15px 40px rgba(3, 149, 228, 0.4);
+  }
+  50% {
+    box-shadow: -15px -15px 40px rgba(3, 149, 228, 0.4);
+  }
+  75% {
+    box-shadow: 15px -15px 40px rgba(3, 149, 228, 0.4);
+  }
+  100% {
+    box-shadow: 15px 15px 40px rgba(3, 149, 228, 0.4);
+  }
+}
+
+.card h3 {
+  margin: 1rem 0;
+  color: var(--dark-grey);
+}
+
+.card p {
+  color: #777;
+  font-size: 0.95rem;
+}
+
+.icon-wrapper {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}

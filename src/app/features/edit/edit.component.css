@@ -1,0 +1,30 @@
+.preview-text {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 2px dashed #e5322d;
+  background: #fff5f5;
+  color: #e5322d;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+
+
+.options {
+    margin-top: 40px; /* Espacio generoso después del cargador */
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: inline-block; /* Para que no ocupe todo el ancho si es poco contenido */
+    min-width: 350px;
+}
+
+.custom-input {
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}

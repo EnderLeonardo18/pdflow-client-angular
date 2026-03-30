@@ -1,0 +1,74 @@
+<div class="tool-page-container">
+    <div class="tool-controls-wrapper">
+        <div class="tool-page">
+            <h1>{{ resultPdfUrl() ? '¡Tu PDF está listo!' : 'Unir PDF' }}</h1>
+
+            <div *ngIf="resultPdfUrl()" class="result-view-container">
+                <p class="subtitle">Revisa el documento generado. Si necesitas cambiar algo, puedes volver al editor.</p>
+
+                <div class="final-result-browser">
+                    <iframe [src]="resultPdfUrl()" frameborder="0"></iframe>
+                </div>
+
+                <div class="result-actions">
+                    <a [href]="resultPdfUrl()" download="unido_docucraft.pdf" class="btn-action btn-download">
+                        📥 Descargar PDF Final
+                    </a>
+                    <button class="btn-secondary" (click)="editAgain()">
+                        ⬅️ Volver a editar / Reordenar
+                    </button>
+                    <button class="btn-text-only" (click)="fullReset()">
+                        Limpiar todo
+                    </button>
+                </div>
+            </div>
+
+            <div *ngIf="!resultPdfUrl()">
+                <p class="subtitle">Combina archivos PDF en el orden que desees.</p>
+
+                <button class="btn-toggle" *ngIf="!isUploaderVisible()" (click)="toggleUploader()">
+                    {{ files().length > 0 ? '➕ Agregar más archivos' : '➕ Seleccionar Archivos' }}
+                </button>
+
+                <div class="uploader-wrapper" *ngIf="isUploaderVisible()">
+                    <app-file-uploader
+                        (onFilesReady)="handleFiles($event)"
+                        (onClose)="toggleUploader()">
+                    </app-file-uploader>
+                </div>
+
+                <div *ngIf="files().length > 0 && !isUploaderVisible()" class="selection-area">
+                    <h3>Orden de unión:</h3>
+                    <ul class="file-list-ordered" cdkDropList (cdkDropListDropped)="drop($event)">
+                        <li *ngFor="let file of files(); let i = index" class="file-item" cdkDrag>
+                            <div class="file-info-left">
+                                <span class="drag-icon">⋮⋮</span>
+                                <span class="file-index">{{ i + 1 }}</span>
+                                <span class="file-name">📄 {{ file.name }}</span>
+                            </div>
+                            <div class="file-actions">
+                                <button type="button" (click)="moveUp(i)" [disabled]="i === 0" class="btn-nav">▲</button>
+                                <button type="button" (click)="moveDown(i)" [disabled]="i === files().length - 1" class="btn-nav">▼</button>
+                                <button type="button" (click)="removeFile(i)" class="btn-remove">✕</button>
+                            </div>
+                            <div class="cdk-drag-placeholder" *cdkDragPlaceholder></div>
+                        </li>
+                    </ul>
+                    <button class="btn-action" (click)="processMerge()" [disabled]="isProcessing()">
+                        {{ isProcessing() ? 'Procesando...' : 'Generar PDF Unido' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="preview-sidebar" *ngIf="files().length > 0 && !resultPdfUrl()">
+        <div class="sidebar-label">Previsualización de originales</div>
+        <div *ngFor="let file of files(); let i = index" class="preview-item">
+            <div class="preview-header">{{ i + 1 }}. {{ file.name }}</div>
+            <div class="iframe-container">
+                <iframe [src]="getSafeUrl(file)"></iframe>
+            </div>
+        </div>
+    </div>
+</div>

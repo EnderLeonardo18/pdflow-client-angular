@@ -1,0 +1,52 @@
+<div class="tool-page-container">
+    <div class="tool-controls-wrapper">
+        <div class="tool-page">
+            <h1>{{ resultPdfUrl() ? '¡Conversión Lista!' : 'Imagen a PDF' }}</h1>
+
+            <div *ngIf="resultPdfUrl()" class="result-view-container">
+                <p class="subtitle">Tu imagen ha sido convertida a PDF exitosamente.</p>
+                <div class="final-result-browser">
+                    <iframe [src]="resultPdfUrl()" frameborder="0"></iframe>
+                </div>
+                <div class="result-actions">
+                    <a [href]="resultPdfUrl()" download="imagen_convertida.pdf" class="btn-action btn-download">📥 Descargar PDF</a>
+                    <button class="btn-secondary" (click)="editAgain()">⬅️ Cambiar imagen</button>
+                    <button class="btn-text-only" (click)="fullReset()">Limpiar todo</button>
+                </div>
+            </div>
+
+            <div *ngIf="!resultPdfUrl()">
+                <p class="subtitle">Convierte cualquier formato de imagen en un PDF profesional.</p>
+
+                <button class="btn-toggle" *ngIf="!selectedFile() && !isUploaderVisible()" (click)="toggleUploader()">
+                    ➕ Seleccionar Imagen
+                </button>
+
+                <div class="uploader-wrapper" *ngIf="isUploaderVisible()">
+                    <app-file-uploader (onFilesReady)="handleFile($event)" (onClose)="toggleUploader()"></app-file-uploader>
+                </div>
+
+                <div *ngIf="selectedFile() && !isUploaderVisible()" class="config-area">
+                    <div class="file-item single-card">
+                        <div class="file-info-left">
+                            <span class="file-index">1</span>
+                            <span class="file-name">🖼️ {{ selectedFile()?.name }}</span>
+                        </div>
+                        <button type="button" (click)="removeFile()" class="btn-remove">✕ Quitar</button>
+                    </div>
+
+                    <button class="btn-action" (click)="processConversion()" [disabled]="isProcessing()">
+                        {{ isProcessing() ? 'Convirtiendo...' : 'Convertir a PDF' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="preview-sidebar" *ngIf="selectedFile() && !resultPdfUrl()">
+        <div class="preview-header">Imagen cargada</div>
+        <div class="iframe-container">
+            <img [src]="getSafeImageUrl(selectedFile())" alt="Previsualización" style="width: 100%; border-radius: 8px; display: block;">
+        </div>
+    </div>
+</div>

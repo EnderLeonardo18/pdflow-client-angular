@@ -1,0 +1,15 @@
+<div class="upload-container">
+    <ngx-file-drop (onFileDrop)="dropped($event)" dropZoneClassName="my-custom-drop-zone">
+        <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            <div class="drop-content" (click)="openFileSelector()" style="cursor: pointer;">
+
+                <button type="button" class="btn-close-inside" (click)="$event.stopPropagation(); onCloseClick()">
+                    ✕
+                </button>
+
+                <p>Arrastra y suelta tus archivos aquí o</p>
+                <button type="button" class="btn-select">Explorar archivos</button>
+            </div>
+        </ng-template>
+    </ngx-file-drop>
+</div>

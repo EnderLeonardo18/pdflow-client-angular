@@ -1,0 +1,75 @@
+.upload-container {
+  /* Centra el contenedor horizontalmente */
+    /* margin: 30px auto;
+    max-width: 600px;   */
+    /* Evita que sea demasiado ancho en pantallas grandes */
+    margin: 0;
+    width: 100%;
+}
+
+.drop-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px; /* Cambiamos height por min-height para mayor flexibilidad */
+    border: 2px dashed #d1d1d1; /* Un gris más suave */
+    border-radius: 16px; /* Bordes más redondeados y modernos */
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+    padding: 20px;
+
+    height: 250px; /* Un poco más de altura para que sea cómodo */
+    position: relative;
+}
+
+.drop-content:hover {
+    border-color: #e5322d;
+    background-color: #fff5f5; /* Un toque de color al pasar el ratón */
+}
+
+.drop-content p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+
+
+.btn-close-inside {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s;
+}
+
+.btn-close-inside:hover {
+    background: #e5322d;
+    color: white;
+}
+
+.btn-select {
+    background-color: #e5322d;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+.btn-select:hover {
+    transform: scale(1.05); /* Efecto visual sutil */
+}

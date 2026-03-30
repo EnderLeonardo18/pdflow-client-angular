@@ -1,0 +1,71 @@
+.navbar {
+  background-color: #333;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  /* --- Nuevas propiedades para fijarlo --- */
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Para que siempre esté por encima del contenido */
+  box-sizing: border-box;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.6rem;
+    letter-spacing: -1.2px;
+    /* Cambiamos a blanco o gris muy claro para que resalte sobre el fondo #333 del navbar */
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 0px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    text-rendering: optimizeLegibility;
+    cursor: pointer;
+
+
+}
+
+.logo:hover {
+    transform: translateY(-1px);
+    filter: drop-shadow(0 0 8px rgba(229, 50, 45, 0.3));
+}
+
+.logo-highlight {
+    color: #e5322d; /* Tu rojo característico */
+    /* Un ligero degradado sutil hace que se vea más moderno */
+    background: linear-gradient(135.2deg, #ff5f5a 0.6%, #e5322d 98%);
+    -webkit-background-clip: text; /* Para Chrome, Safari, Edge */
+    background-clip: text;         /* Propiedad estándar para compatibilidad total */
+    -webkit-text-fill-color: transparent;
+}
+
+/* El punto decorativo mejorado */
+.logo::after {
+    content: '';
+    width: 5px;
+    height: 5px;
+    background-color: #e5322d;
+    border-radius: 50%;
+    margin-left: 4px;
+    margin-top: 12px;
+    box-shadow: 0 0 10px rgba(229, 50, 45, 0.5);
+}
+
+.nav-links { list-style: none; display: flex; gap: 20px; }
+.nav-links a { color: white; text-decoration: none; font-weight: 500; }
+.nav-links a:hover { color: #e5322d; }
+
+
+
+
+.active-link {
+    border-bottom: 3px solid #e5322d;
+    color: #e5322d !important;
+    font-weight: bold;
+}

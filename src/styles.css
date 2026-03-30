@@ -1,1 +1,558 @@
-/* You can add global styles to this file, and also import other style files */
+/* --- Variables y Reset Global --- */
+:root {
+  /* Colores de marca DocuCraft */
+  --primary-red: #e5322d;
+  --hover-red: #c42824;
+  --dark-grey: #333333;
+  --text-grey: #555555;
+  --light-text-grey: #777777;
+
+  /* Fondos y Bordes */
+  --light-bg: #fdfdfd;       /* Fondo de página muy claro */
+  --white: #ffffff;         /* Fondo de tarjetas */
+  --border-grey: #e0e0e0;
+  --dropzone-bg: #fafafa;
+
+  /* Sombras y Efectos */
+  --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+  --transition: all 0.3s ease;
+}
+
+/* Mejora de renderizado de texto */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--light-bg);
+  color: var(--dark-grey);
+  line-height: 1.5;
+  overflow: hidden; /* Evita el scroll doble de la página completa */
+}
+
+
+/* --- Layout de Pantalla Completa --- */
+.tool-page-container {
+  display: flex;
+  flex-direction: row;
+  /* 100vh menos el alto del navbar. Si el navbar mide 64px, esto es perfecto */
+  height: calc(100vh - 64px);
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--light-bg);
+  /* Eliminamos márgenes que puedan empujar el layout */
+  margin: 0;
+}
+
+/* Columna Izquierda: Configuración */
+.tool-controls-wrapper {
+  flex: 1;
+  overflow-y: auto; /* Permite scroll si hay muchos archivos en la lista */
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* --- Estilos de Página de Herramienta --- */
+.tool-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 50px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tool-page h1 {
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--dark-grey);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--text-grey);
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+
+
+/* Columna Derecha: Sidebar de Previsualización */
+.preview-sidebar {
+  width: 500px; /* Ancho cómodo para lectura */
+  background-color: #525659; /* Gris oscuro profesional (estilo Chrome PDF) */
+  border-left: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 30px; /* Espacio entre cada PDF */
+  overflow-y: auto; /* AQUÍ se genera el scroll para los 10+ PDFs */
+}
+
+/* Tarjeta de cada PDF individual */
+.preview-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.preview-header {
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* El contenedor del PDF */
+.iframe-container {
+  width: 100%;
+  height: 600px; /* Altura fija para que el PDF se vea grande y legible */
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.iframe-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+
+
+
+.preview-item:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+
+
+
+
+
+
+.preview-sidebar iframe,
+.preview-sidebar img {
+  width: 100%;
+  height: 100%;
+  border: none;
+  object-fit: contain; /* Para que la imagen no se deforme */
+}
+
+.preview-sidebar iframe {
+    width: 100%;
+    height: 400px; /* Altura fija para que sea manejable */
+    border: 1px solid var(--border-grey);
+    border-radius: 8px;
+    background-color: white;
+}
+
+/* --- Lista de Archivos (Merge y Split) --- */
+.file-list-ordered {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border-grey);
+  margin-bottom: 12px;
+  transition: var(--transition);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.file-item:hover {
+  border-color: var(--primary-red);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+
+/* Estilo para la tarjeta única en Split/Edit */
+.single-card {
+  border: 2px solid var(--primary-red);
+  background: #fffafa;
+  max-width: 500px;
+  margin: 0 auto 20px auto;
+}
+
+
+/* El círculo con el número */
+.file-index {
+  background: var(--primary-red);
+  color: white;
+  min-width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.file-info-left {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-align: left;
+}
+
+.file-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  color: var(--dark-grey);
+}
+
+
+/* --- Botones de Acción (Flechas y Borrar) --- */
+.file-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-nav {
+  background: #f0f0f0;
+  border: none;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.btn-nav:hover:not(:disabled) {
+  background: #e0e0e0;
+}
+
+.btn-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-remove {
+  background: transparent;
+  border: none;
+  color: var(--primary-red);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 5px 10px;
+}
+
+/* --- Botones --- */
+
+/* Botón Global de Acción (iLovePDF Style) */
+.btn-action {
+  background-color: var(--primary-red);
+  color: var(--white);
+  border: none;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+  width: 100%;
+  max-width: 350px;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 10px rgba(229, 50, 45, 0.2);
+}
+
+.btn-action:hover {
+  background-color: var(--hover-red);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(229, 50, 45, 0.3);
+}
+
+.btn-action:active {
+  transform: translateY(-1px);
+}
+
+.btn-action:disabled {
+  background-color: #e0e0e0;
+  color: var(--light-text-grey);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Botón Toggle (➕ Seleccionar Archivos) */
+.btn-toggle {
+  background-color: var(--dark-grey);
+  color: var(--white);
+  padding: 14px 30px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: var(--transition);
+  margin-bottom: 30px;
+}
+
+.btn-toggle:hover {
+  background-color: var(--primary-red);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Contenedor del Uploader y Botón X --- */
+
+/* --- Contenedor del Uploader --- */
+.uploader-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  /* Eliminamos padding para que la zona gris llene todo el espacio */
+  padding: 0;
+  animation: slideDownFade 0.4s ease-out;
+}
+
+/* --- Botón de cerrar (X) DENTRO de la zona gris --- */
+.btn-close-uploader {
+  position: absolute;
+  /* Valores positivos para que entre en la zona gris del uploader */
+  top: 15px;
+  right: 15px;
+  background-color: var(--white);
+  color: var(--dark-grey);
+  border: 1px solid var(--border-grey);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  /* Z-index alto para que esté por encima de la zona de drop */
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+.btn-close-uploader:hover {
+  background-color: var(--primary-red);
+  color: white;
+  transform: scale(1.1);
+}
+
+/* --- Ocultar el cuadro blanco extra --- */
+/* Asegúrate de que .config-area no tenga estilos que lo fuercen a mostrarse si está vacío */
+.config-area, .selection-area {
+  background-color: var(--white);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto; /* Centrado */
+}
+
+/* --- Inputs y Grupos de Formulario --- */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 350px;
+}
+
+.input-group label {
+  font-weight: 600;
+  color: var(--dark-grey);
+  font-size: 1.1rem;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid var(--border-grey);
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: var(--transition);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.custom-input:focus {
+  border-color: var(--primary-red);
+  box-shadow: 0 0 0 4px rgba(229, 50, 45, 0.1);
+}
+
+/* --- Animaciones --- */
+@keyframes slideDownFade {
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* --- Loading Spinner --- */
+.loading-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 50px;
+  color: var(--primary-red);
+  font-weight: bold;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid var(--primary-red);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+
+
+
+
+/* --- MOVER A styles.css (LAYOUT Y RESULTADOS GLOBALES) --- */
+
+/* Contenedor de la vista de resultado */
+.result-view-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    animation: slideUp 0.4s ease-out;
+}
+
+/* El visor de PDF gigante (80% de la pantalla) */
+.final-result-browser {
+    width: 100%;
+    height: 80vh;
+    background: #525659;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    overflow: hidden;
+    border: 1px solid #333;
+}
+
+.final-result-browser iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Acciones del resultado */
+.result-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 40px;
+}
+
+/* Botones de estado final */
+.btn-download {
+    background-color: #28a745 !important; /* Verde éxito */
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white !important;
+    padding: 15px 35px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* --- Botón Secundario (Volver a editar) --- */
+.btn-secondary {
+    background: white;
+    border: 2px solid #dee2e6; /* Un gris más suave que encaja con el visor */
+    color: #495057;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.btn-secondary:hover {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+    color: #212529;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+    background: #e9ecef;
+}
+
+/* --- Botón de Texto (Limpiar todo) --- */
+.btn-text-only {
+    background: transparent;
+    border: none;
+    color: #6c757d;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none; /* Quitamos el subrayado estático */
+    transition: all 0.2s ease;
+}
+
+.btn-text-only:hover {
+    color: #dc3545; /* Rojo sutil al hover porque suele ser para "borrar" */
+    background: rgba(220, 53, 69, 0.05); /* Fondo rojizo muy suave */
+    text-decoration: underline;
+}
+
+.btn-text-only:active {
+    transform: scale(0.98);
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
