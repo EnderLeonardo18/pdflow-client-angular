@@ -1,6 +1,15 @@
-# DocucraftClientAngular
+# PdflowClientAngular
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.1.
+
+# PDFlow Client 🎨
+
+Interfaz de usuario moderna para la plataforma **PDFlow**, construida con Angular 19. Permite la gestión y visualización de documentos delegando la lógica al motor de procesamiento.
+
+## 🔗 Ecosistema PDFlow
+* **Motor de Procesamiento (Backend):** [PDFlow Engine (NestJS)](https://github.com/EnderLeonardo18/pdflow-engine-nest)
+
+---
 
 ## Development server
 
